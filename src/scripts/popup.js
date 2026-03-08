@@ -499,6 +499,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const copyBtn = document.getElementById('copyReport');
 
         generateBtn.addEventListener('click', function () {
+            // Show loading state immediately for clear feedback
+            generateBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ' + (chrome.i18n.getMessage('generatingButton') || 'Generating...');
+            generateBtn.disabled = true;
 
             chrome.storage.local.get(['platform'], function (result) {
                 const platform = result.platform || 'github';
@@ -512,8 +515,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     chrome.storage.local.get(['platform'], function (res) {
                         platformSelect.value = res.platform || 'github';
                         updatePlatformUI(platformSelect.value);
-                        generateBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Generating...';
-                        generateBtn.disabled = true;
                         window.generateScrumReport && window.generateScrumReport();
                     });
                 });
